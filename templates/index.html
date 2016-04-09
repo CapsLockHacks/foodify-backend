@@ -12,14 +12,15 @@
 
         <div class="text-center col-md-4 col-md-offset-4"> 
 
-    <form class="form-horizontal">
   <fieldset>
 
       <div class="panel panel-primary" style="margin-top:7.5em;">
   <div class="panel-heading" >
- <a class="btn btn-block btn-social btn-facebook" href="/connect">
-    <span class="fa fa-facebook"></span>Sign in with hacknsit-health-monitor
-  </a>
+  <form action="/login", method="post">
+  u:<input type="text" name="user"></input>
+  p:<input type="password" name="password"></input>
+  <button type="submit"></button>
+  </form>
   </div>
 
 </div>
@@ -30,7 +31,7 @@
  
   </fieldset>
       <div class="ui error message"></div>
-    </form>
+    
     {% if error_message %}
     <div class="ui negative message">
       <h4>{{ error_message }}</h4>

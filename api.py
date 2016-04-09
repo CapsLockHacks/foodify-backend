@@ -64,10 +64,10 @@ def user_register():
         u = User.signup(user_name, password, phone=phone, weight=weight)
         return jsonify(result='Registered!')
 
-@app.route('/user/calories', methods=['PUT'])
-def user_calories():
-    if request.method == 'PUT':
-        session_token  = request.form['session_token']
+@app.route('/user/calories/<token>', methods=['GET'])
+def user_calories(token):
+    if request.method == 'GET':
+        session_token  = token
         with SessionToken(session_token):
             me = User.current_user()
             me.calories = str(float(me.weight) * 33 )

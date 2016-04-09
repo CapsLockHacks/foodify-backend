@@ -78,7 +78,7 @@ def upload_file():
             if status['status'] != cloudsight.STATUS_NOT_COMPLETED:
                 # Done!
                 pass
-            status = api.wait(response['token'], timeout=30)
+            status = api.wait(response['token'], timeout=60)
 
             #print(status)
 

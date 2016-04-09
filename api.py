@@ -73,7 +73,7 @@ def user_calories():
             me.calories = str(float(me.weight) * 33 )
             me.save()
             return me.calories
-
+'''
 @app.route('/user/feed', methods=['GET', 'POST'])
 def user_feed(user_data):
     if request.method == 'POST':
@@ -83,6 +83,7 @@ def user_feed(user_data):
             me.activity = user_data
             me.save()
             return "done.."
+'''
 
 @app.route('/upload', methods=['POST'])
 def upload_file():

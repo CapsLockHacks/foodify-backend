@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 
@@ -252,6 +253,46 @@
 
         </div>
         <!-- /#page-wrapper -->
+=======
+{% extends "base.html" %}
+
+{% block body %}
+<div class="container container-table">
+    <div class="row vertical-center-row">
+        <div class="text-center">
+            <h1 style="padding-top:1.1em;">see your cals</h1>
+    
+            
+                            <h4> hacknsit</h4>
+</div>
+
+        <div class="text-center col-md-4 col-md-offset-4"> 
+
+  <fieldset>
+
+      <div class="panel panel-primary" style="margin-top:7.5em;">
+  <div class="panel-heading" >
+  <form action="/login", method="post">
+  u:<input type="text" name="user"></input>
+  p:<input type="password" name="password"></input>
+  <button type="submit"></button>
+  </form>
+  </div>
+
+</div>
+            
+
+</div>
+
+ 
+  </fieldset>
+      <div class="ui error message"></div>
+    
+    {% if error_message %}
+    <div class="ui negative message">
+      <h4>{{ error_message }}</h4>
+    </div>
+>>>>>>> 72da8c453540d1cf7343187e9848965f92656807
 
     </div>
     <!-- /#wrapper -->

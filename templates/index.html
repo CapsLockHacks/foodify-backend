@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="container container-table">
+    <div class="row vertical-center-row">
+        <div class="text-center">
+            <h1 style="padding-top:1.1em;">see your cals</h1>
+    
+            
+                            <h4> hacknsit</h4>
+</div>
+
+        <div class="text-center col-md-4 col-md-offset-4"> 
+
+    <form class="form-horizontal">
+  <fieldset>
+
+      <div class="panel panel-primary" style="margin-top:7.5em;">
+  <div class="panel-heading" >
+ <a class="btn btn-block btn-social btn-facebook" href="/connect">
+    <span class="fa fa-facebook"></span>Sign in with hacknsit-health-monitor
+  </a>
+  </div>
+
+</div>
+            
+
+</div>
+
+ 
+  </fieldset>
+      <div class="ui error message"></div>
+    </form>
+    {% if error_message %}
+    <div class="ui negative message">
+      <h4>{{ error_message }}</h4>
+    </div>
+
+    </div>
+</div>
+
+    {% endif %}
+ 
+{% endblock %}
+

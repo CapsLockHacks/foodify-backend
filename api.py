@@ -3,6 +3,8 @@ import requests as re
 from flask import Flask, jsonify, request, redirect, url_for
 from flask.ext.cors import CORS
 
+from nutritionix import Nutritionix
+
 from werkzeug import secure_filename
 
 import cloudsight
@@ -10,6 +12,7 @@ import cloudsight
 auth = cloudsight.SimpleAuth('qAd-COIpRxvKVaNUKrJMMQ')
 api = cloudsight.API(auth)
 
+nix = Nutritionix(app_id="76986486", api_key="28882f3d105c4c9e3222a05eeafd049a")
 
 UPLOAD_FOLDER = 'tmp'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
@@ -42,9 +45,11 @@ def upload_file():
                 pass
             status = api.wait(response['token'], timeout=30)
 
-            print(status)
+            #print(status)
 
-            return jsonify(result=status.name)
+            result = nix.search(status["name"], results="0:1").json()["hits"][0]["fields"]["item_id"]
+			
+            return jsonify(result=nix.item(id=result).json())
 
 
     

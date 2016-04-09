@@ -10,7 +10,7 @@ from werkzeug import secure_filename
 
 import cloudsight
 
-from parse_rest.connection import register
+from parse_rest.connection import register, SessionToken
 from parse_rest.datatypes import Object
 from parse_rest.user import User
 
@@ -54,19 +54,35 @@ def allowed_file(filename):
 def helloWorld():
   return "Hello, world! <a href='https://github.com/CapsLockHacks/hackNSIT-backend'>Fork me on GitHub!</a>"
 
-@app.route('/user/register', methods=[ 'POST'])
+@app.route('/user/register', methods=['POST'])
 def user_register():
     if request.method == 'POST':
         user_name = request.form['user']
         password  = request.form['password']
         phone     = request.form['phone']
-        u = User.signup("test1", "1234", phone="123123")
-        return "Done!"
+        weight    = request.form['weight']
+        u = User.signup(user_name, password, phone=phone, weight=weight)
+        return jsonify(result='Registered!')
 
+@app.route('/user/feed', methods=['PUT'])
+def user_feed():
+    if request.method == 'PUT':
+        #user_name = request.form['user']
+        session_token  = request.form['session_token']
 
+        with SessionToken(session_token):
+            me = User.current_user()
+            #me.weight = str(float(me.weight) + 5)
+            
+            me.calories = str()
+
+            me.save()
+            return me.weight
+        
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
+    
     if request.method == 'POST':
         file = request.files['file']
         if file and allowed_file(file.filename):

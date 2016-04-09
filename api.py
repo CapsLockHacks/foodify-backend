@@ -1,7 +1,8 @@
 import os
 import requests as re
-from flask import Flask, jsonify, request, redirect, url_for
+from flask import Flask, jsonify, request, redirect, url_for,session
 from flask.ext.cors import CORS
+from flask_oauthlib.client import OAuth, OAuthException
 
 from werkzeug import secure_filename
 
@@ -13,6 +14,21 @@ api = cloudsight.API(auth)
 
 UPLOAD_FOLDER = 'tmp'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
+FACEBOOK_APP_ID = os.environ['FACEBOOK_APP_ID']
+FACEBOOK_APP_SECRET = os.environ['FACEBOOK_APP_SECRET']
+oauth = OAuth(app)
+
+facebook = oauth.remote_app(
+    'facebook',
+    consumer_key=FACEBOOK_APP_ID,
+    consumer_secret=FACEBOOK_APP_SECRET,
+    request_token_params={'scope': 'email'},
+    base_url='https://graph.facebook.com',
+    request_token_url=None,
+    access_token_url='/oauth/access_token',
+    access_token_method='GET',
+    authorize_url='https://www.facebook.com/dialog/oauth'
+)
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -26,12 +42,13 @@ def allowed_file(filename):
 def helloWorld():
   return "Hello, world! <a href='https://github.com/CapsLockHacks/hackNSIT-backend'>Fork me on GitHub!</a>"
 
+
+
 @app.route('/upload', methods=['POST'])
 def upload_file():
     if request.method == 'POST':
         file = request.files['file']
         if file and allowed_file(file.filename):
-            #with open(file, 'rb') as f:
             response = api.image_request(file, file.filename, {
                 'image_request[locale]': 'en-US',
             })
@@ -47,7 +64,36 @@ def upload_file():
             return jsonify(result=status.name)
 
 
-    
+@app.route('/connect')
+def login():
+    callback = url_for(
+        'facebook_authorized',
+        next=request.args.get('next') or request.referrer or None,
+        _external=True
+    )
+    return facebook.authorize(callback=callback)
+
+
+@app.route('/login/authorized')
+def facebook_authorized():
+    resp = facebook.authorized_response()
+    if resp is None:
+        return 'Access denied: reason=%s error=%s' % (
+            request.args['error_reason'],
+            request.args['error_description']
+        )
+    if isinstance(resp, OAuthException):
+        return 'Access denied: %s' % resp.message
+
+    session['oauth_token'] = (resp['access_token'], '')
+    return redirect('/')
+
+
+@facebook.tokengetter
+def get_facebook_oauth_token():
+    return session.get('oauth_token')
+
+
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port,debug=True)

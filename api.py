@@ -10,6 +10,12 @@ from werkzeug import secure_filename
 
 import cloudsight
 
+from parse_rest.connection import register
+from parse_rest.datatypes import Object
+from parse_rest.user import User
+
+register('O6H2V7pJzoOWntRT9hFqpxxHHdJTCLtA7xmnhHZ5', 'olPs7M45S8mx7RpdSOSbAqfZbfBKjLzDzqISSivP', master_key='ZSpZtkfRzOziXOOJEy9kGjaTDVaju64YQcbLeBRH')
+
 auth = cloudsight.SimpleAuth('qAd-COIpRxvKVaNUKrJMMQ')
 api = cloudsight.API(auth)
 
@@ -47,6 +53,15 @@ def allowed_file(filename):
 @app.route("/")
 def helloWorld():
   return "Hello, world! <a href='https://github.com/CapsLockHacks/hackNSIT-backend'>Fork me on GitHub!</a>"
+
+@app.route('/user/register', methods=[ 'POST'])
+def user_register():
+    if request.method == 'POST':
+        user_name = request.form['user']
+        password  = request.form['password']
+        phone     = request.form['phone']
+        u = User.signup("test1", "1234", phone="123123")
+        return "Done!"
 
 
 

@@ -104,7 +104,7 @@ def upload_file():
             #print(status)
 
             result = nix.search(status["name"], results="0:1").json()["hits"][0]["fields"]["item_id"]
-            user_feed(result)
+            #user_feed(result)
 			
             return jsonify(result=nix.item(id=result).json())
 

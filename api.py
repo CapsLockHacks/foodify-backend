@@ -107,6 +107,19 @@ def upload_file():
 			
             return jsonify(result=nix.item(id=result).json())
 
+@app.route('/recipies/calories/<max_cals>')
+def get_recipies(max_cals):
+    response = re.get("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/findByNutrients?maxcalories="+str(int(max_cals))+"&mincalories="+str(int(max_cals) - 100),
+      headers={
+        "X-Mashape-Key": "W7jaTbbJiTmsh3I6KohzH78AB1rdp1QBemhjsnsFIGb95YARfD"
+      }
+    )
+
+    #print(response.json()[0])
+    
+    edited_response = [i for i in response.json() if int(i["calories"]) <= int(max_cals) and int(i["calories"]) >= (int(max_cals) - 100)]
+    return jsonify(result=edited_response)
+
 
 @app.route('/connect')
 def login():

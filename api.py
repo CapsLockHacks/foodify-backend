@@ -19,6 +19,11 @@ UPLOAD_FOLDER = 'tmp'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 FACEBOOK_APP_ID = os.environ['FACEBOOK_APP_ID']
 FACEBOOK_APP_SECRET = os.environ['FACEBOOK_APP_SECRET']
+
+app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+CORS(app)
+
 oauth = OAuth(app)
 
 facebook = oauth.remote_app(
@@ -33,9 +38,6 @@ facebook = oauth.remote_app(
     authorize_url='https://www.facebook.com/dialog/oauth'
 )
 
-app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-CORS(app)
 
 def allowed_file(filename):
     return '.' in filename and \

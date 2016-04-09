@@ -64,21 +64,25 @@ def user_register():
         u = User.signup(user_name, password, phone=phone, weight=weight)
         return jsonify(result='Registered!')
 
-@app.route('/user/feed', methods=['PUT'])
-def user_feed():
+@app.route('/user/calories', methods=['PUT'])
+def user_calories():
     if request.method == 'PUT':
-        #user_name = request.form['user']
         session_token  = request.form['session_token']
-
         with SessionToken(session_token):
             me = User.current_user()
-            #me.weight = str(float(me.weight) + 5)
-            
-            me.calories = str()
-
+            me.calories = str(float(me.weight) * 33 )
             me.save()
-            return me.weight
-        
+            return me.calories
+
+@app.route('/user/feed', methods=['GET', 'POST'])
+def user_feed(user_data):
+    if request.method == 'POST':
+        session_token  = request.form['session_token']
+        with SessionToken(session_token):
+
+            me.activity = user_data
+            me.save()
+            return "done.."
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
@@ -99,6 +103,7 @@ def upload_file():
             #print(status)
 
             result = nix.search(status["name"], results="0:1").json()["hits"][0]["fields"]["item_id"]
+            user_feed(result)
 			
             return jsonify(result=nix.item(id=result).json())
 

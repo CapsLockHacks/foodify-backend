@@ -23,6 +23,7 @@ FACEBOOK_APP_SECRET = os.environ['FACEBOOK_APP_SECRET']
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 CORS(app)
+app.secret_key = 'development'
 
 oauth = OAuth(app)
 

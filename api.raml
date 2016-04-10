@@ -1,0 +1,46 @@
+#%RAML 0.8
+title: Foodify
+version: 1.0
+
+baseUri: http://http://hacknsit.herokuapp.com/
+
+/user:
+  /register:
+    post:
+      description: Register a user to the app
+      queryParameters:
+        user:
+          example: rohan
+        password:
+          example: pwd
+        phone:
+          example: "9810000001"
+        weight:
+          example: "55"
+  /calories:
+    /{token}:
+      displayName: User Auth Token from Parse
+      get:
+        description: Returns the calories requirement according to weight of user
+  /calleft:
+    /{token}:
+      get:
+        description: Returns the calculated calories left to be consumed according to the track feed of the user
+  /feed:
+    /{token}:
+      get:
+        description: Returns the calculated calories consumed according to the feed
+/upload:
+  post:
+    queryParameters:
+      file:
+        description: Multipart Image of Product
+    description: Returns the response from the pipeline made between cloudsight API and nutritionix api. 
+
+/recipies:
+  /calories:
+    /{max_cals}:
+      description: Returns the possible recipes given the maximum calories as upper limit 
+  /info:
+    /{rid}:
+      description: Retrieve the information about a specific recipie

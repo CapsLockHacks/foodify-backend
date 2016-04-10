@@ -38,7 +38,7 @@ def login():
 	u = User.login(user_name, password)
 	session["auth_token"] = u.sessionToken
 	session["user_name"] = u.username
-	return "login success"
+    return render_template('result.html',calories=r)
 
 @app.errorhandler(404)
 def page_not_found(error):

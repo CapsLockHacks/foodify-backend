@@ -3,7 +3,7 @@ import requests as re
 from flask import Flask, jsonify, request, redirect, url_for,session
 from flask.ext.cors import CORS
 from flask_oauthlib.client import OAuth, OAuthException
-
+import json
 from nutritionix import Nutritionix
 
 from werkzeug import secure_filename
@@ -73,8 +73,9 @@ def user_calories(token):
             me.calories = str(float(me.weight) * 33 )
             me.save()
             return me.calories
+
 @app.route('/user/calleft/<token>', methods=['GET'])
-def user_calories(token):
+def user_calleft(token):
     if request.method == 'GET':
         session_token  = token
         with SessionToken(session_token):
@@ -83,15 +84,19 @@ def user_calories(token):
             me.save()
             return me.calleft
 
-@app.route('/user/feed', methods=['GET'])
-def user_calories(token):
+@app.route('/user/feed/<token>', methods=['GET'])
+def user_feed(token):
     if request.method == 'GET':
         session_token  = token
         with SessionToken(session_token):
             me = User.current_user()
             me.calconsumed = 0
+            print(me.feed)
+
             for i in me.feed:
-                me.calconsumed += i['calories']
+                j = json.loads(i)
+                #print(j)
+                me.calconsumed = str(int(j['calories']) + int(me.calconsumed))
             me.save()
             return me.calconsumed
 

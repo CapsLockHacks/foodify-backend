@@ -73,17 +73,28 @@ def user_calories(token):
             me.calories = str(float(me.weight) * 33 )
             me.save()
             return me.calories
-'''
-@app.route('/user/feed', methods=['GET', 'POST'])
-def user_feed(user_data):
-    if request.method == 'POST':
-        session_token  = request.form['session_token']
+@app.route('/user/calleft/<token>', methods=['GET'])
+def user_calories(token):
+    if request.method == 'GET':
+        session_token  = token
         with SessionToken(session_token):
-
-            me.activity = user_data
+            me = User.current_user()
+            me.calleft = user_calories(token) - me.feed['calories']
             me.save()
-            return "done.."
-'''
+            return me.calleft
+
+@app.route('/user/feed', methods=['GET'])
+def user_calories(token):
+    if request.method == 'GET':
+        session_token  = token
+        with SessionToken(session_token):
+            me = User.current_user()
+            me.calconsumed = 0
+            for i in me.feed:
+                me.calconsumed += i['calories']
+            me.save()
+            return me.calconsumed
+
 
 @app.route('/upload', methods=['POST'])
 def upload_file():

@@ -37,7 +37,7 @@ def login():
 
 	u = User.login(user_name, password)
 	session["auth_token"] = u.sessionToken
-	session["user_name"] = u.username
+	session["user_namFriende"] = u.username
     return render_template('result.html',calories=r)
 
 @app.errorhandler(404)

@@ -2,7 +2,16 @@
 title: Foodify
 version: 1.0
 
-baseUri: http://http://hacknsit.herokuapp.com/
+baseUri: http://{domain}/
+
+baseUriParameters:
+  domain:
+    description: "The website domain"
+    example: "hacknsit.herokuapp.com"
+    default: "hacknsit.herokuapp.com"
+/:
+  get:
+    description: Returns Welcome along with Github URL
 
 /user:
   /register:
@@ -44,3 +53,4 @@ baseUri: http://http://hacknsit.herokuapp.com/
   /info:
     /{rid}:
       description: Retrieve the information about a specific recipie
+        
